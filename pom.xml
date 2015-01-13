@@ -5,5 +5,90 @@
 
   <groupId>fi.floweb</groupId>
   <artifactId>prizr</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
+
+	<parent>
+		<groupId>org.drools</groupId>
+		<artifactId>drools-examples-api</artifactId>
+		<version>6.1.0.Final</version>
+	</parent>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-compiler</artifactId>
+		</dependency>
+	</dependencies>
+
+	<!--  <build>
+		<plugins>
+			<plugin>
+				<groupId>org.drools</groupId>
+				<artifactId>drools-maven-plugin</artifactId>
+				<version>6.1.0</version>
+				<extensions>true</extensions>
+			</plugin>
+		</plugins>	
+	</build> -->
+	
+	<!--<repositories>
+    	<repository>
+      	<id>JBoss repository</id>
+      	<name>your custom repo</name>
+      	<url>http://repository.jboss.org</url>
+    	</repository>
+  </repositories>-->
+
+	<build>
+  <plugins>
+    <plugin>
+      <artifactId>maven-assembly-plugin</artifactId>
+      <configuration>
+        <archive>
+          <manifest>
+            <mainClass>fi.floweb.prizr.RunPrizr</mainClass>
+          </manifest>
+        </archive>
+        <descriptorRefs>
+          <descriptorRef>jar-with-dependencies</descriptorRef>
+        </descriptorRefs>
+      </configuration>
+    </plugin>
+  </plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											build-helper-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.7,)
+										</versionRange>
+										<goals>
+											<goal>parse-version</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 </project>
