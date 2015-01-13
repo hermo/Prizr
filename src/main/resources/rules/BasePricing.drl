@@ -1,0 +1,30 @@
+package fi.floweb
+ 
+import fi.floweb.prizr.beans.*;
+ 
+rule "Each pricingresponse should be based on same attributes as there are in request"
+    when
+        $pres : PricingResponse( articleNum == null, articleCategory == null, country == null, placeCode == null)
+        $preq : PricingRequest()
+    then
+        $pres.setArticleNum($preq.getArticleNum());
+        $pres.setArticleCategory($preq.getArticleCategory());
+        $pres.setCountry($preq.getCountry());
+        $pres.setPlaceCode($preq.getPlaceCode());
+        update( $pres );
+end
+
+rule "Category, country and place code determine which pricemultiplier should be used"
+	when 
+		$pres : PricingResponse( country != null, articleCategory != null, placeCode != null, pricingDone == false)
+		PricingResponse( $country : country, $articleCategory : articleCategory, $placeCode : placeCode)
+		$preq : PricingRequest()
+		$multiplier : MultiplierBase( appliesToCategory == $articleCategory, appliesToLocation == $placeCode)
+	then
+		float newPrice = $preq.getPurchasePrice()*$multiplier.getMultiplier();
+		$pres.setPrice(newPrice);
+		$pres.setPricingDone(true);
+		System.out.println("Purchaseprice: "+$preq.getPurchasePrice());
+		System.out.println("Multiplied price: "+$pres.getPrice());
+		update( $pres )
+end
