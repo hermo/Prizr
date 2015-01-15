@@ -13,23 +13,35 @@
 		<version>6.1.0.Final</version>
 	</parent>
 	
+	<dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.glassfish.jersey</groupId>
+                <artifactId>jersey-bom</artifactId>
+                <version>${jersey.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+	
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.drools</groupId>
 			<artifactId>drools-compiler</artifactId>
 		</dependency>
+		<dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet-core</artifactId>
+            <!-- use the following artifactId if you don't need servlet 2.x compatibility -->
+            <!-- artifactId>jersey-container-servlet</artifactId -->
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-moxy</artifactId>
+        </dependency>
 	</dependencies>
-
-	<!--  <build>
-		<plugins>
-			<plugin>
-				<groupId>org.drools</groupId>
-				<artifactId>drools-maven-plugin</artifactId>
-				<version>6.1.0</version>
-				<extensions>true</extensions>
-			</plugin>
-		</plugins>	
-	</build> -->
 	
 	<!--<repositories>
     	<repository>
@@ -39,10 +51,21 @@
     	</repository>
   </repositories>-->
 
-	<build>
+<build>
+<finalName>Prizr-webapp</finalName>
   <plugins>
     <plugin>
-      <artifactId>maven-assembly-plugin</artifactId>
+    	<groupId>org.apache.maven.plugins</groupId>
+    	<artifactId>maven-compiler-plugin</artifactId>
+    	<version>2.5.1</version>
+        <inherited>true</inherited>
+        <configuration>
+        	<source>1.7</source>
+            <target>1.7</target>
+        </configuration>
+    </plugin>
+    <plugin>
+    <artifactId>maven-assembly-plugin</artifactId>
       <configuration>
         <archive>
           <manifest>
@@ -91,4 +114,8 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	<properties>
+        <jersey.version>2.15</jersey.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 </project>
