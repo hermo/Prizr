@@ -12,7 +12,7 @@ import fi.floweb.prizr.beans.PricingResponse;
 /**
  * This is a sample class to launch a rule.
  */
-public class RunPrizr {
+public class RunPrizrTest {
 
     public static final void main(String[] args) {
         try {
