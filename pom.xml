@@ -6,41 +6,60 @@
   <groupId>fi.floweb</groupId>
   <artifactId>prizr</artifactId>
   <version>1.0.0</version>
-
+  
 	<parent>
 		<groupId>org.drools</groupId>
 		<artifactId>drools-examples-api</artifactId>
 		<version>6.1.0.Final</version>
 	</parent>
-	
-	<dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.glassfish.jersey</groupId>
-                <artifactId>jersey-bom</artifactId>
-                <version>${jersey.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-	
-	
+
 	<dependencies>
+	<dependency>
+    <groupId>org.eclipse.jetty</groupId>
+    <artifactId>jetty-server</artifactId>
+    <version>9.2.3.v20140905</version>
+  </dependency>
+  <dependency>
+    <groupId>org.eclipse.jetty</groupId>
+    <artifactId>jetty-util</artifactId>
+    <version>9.2.3.v20140905</version>
+  </dependency>
+  <dependency>
+    <groupId>org.eclipse.jetty</groupId>
+    <artifactId>jetty-servlet</artifactId>
+    <version>9.2.3.v20140905</version>
+  </dependency>
+  <dependency>
+    <groupId>org.glassfish.jersey.core</groupId>
+    <artifactId>jersey-server</artifactId>
+    <version>2.7</version>
+  </dependency>
+  <dependency>
+    <groupId>org.glassfish.jersey.containers</groupId>
+    <artifactId>jersey-container-servlet-core</artifactId>
+    <version>2.7</version>
+  </dependency>
+  <dependency>
+    <groupId>org.glassfish.jersey.containers</groupId>
+    <artifactId>jersey-container-jetty-http</artifactId>
+    <version>2.7</version>
+  </dependency>
+  <dependency>
+    <groupId>org.glassfish.jersey.media</groupId>
+    <artifactId>jersey-media-moxy</artifactId>
+    <version>2.7</version>
+  </dependency>
+  <dependency>
+	<groupId>javax.servlet</groupId>
+	<artifactId>servlet-api</artifactId>
+	<version>2.5</version>
+</dependency>
+	
 		<dependency>
 			<groupId>org.drools</groupId>
 			<artifactId>drools-compiler</artifactId>
 		</dependency>
-		<dependency>
-            <groupId>org.glassfish.jersey.containers</groupId>
-            <artifactId>jersey-container-servlet-core</artifactId>
-            <!-- use the following artifactId if you don't need servlet 2.x compatibility -->
-            <!-- artifactId>jersey-container-servlet</artifactId -->
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.media</groupId>
-            <artifactId>jersey-media-moxy</artifactId>
-        </dependency>
+		
 	</dependencies>
 	
 	<!--<repositories>
@@ -69,7 +88,7 @@
       <configuration>
         <archive>
           <manifest>
-            <mainClass>fi.floweb.prizr.RunPrizr</mainClass>
+            <mainClass>fi.floweb.prizr.RunPrizrServer</mainClass>
           </manifest>
         </archive>
         <descriptorRefs>
@@ -77,11 +96,6 @@
         </descriptorRefs>
       </configuration>
     </plugin>
-    <plugin>
-	 	<groupId>org.eclipse.jetty</groupId>
- 		<artifactId>jetty-maven-plugin</artifactId>
- 		<version>9.2.6.v20141205</version>
-	</plugin>
   </plugins>
 		<pluginManagement>
 			<plugins>
