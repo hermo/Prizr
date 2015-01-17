@@ -22,13 +22,15 @@ public class DroolsServletContextClass implements ServletContextListener {
 	private static ServletContext application;
 	
 	@Override
-	public void contextDestroyed(ServletContextEvent arg0) {
+	public void contextDestroyed(ServletContextEvent scr) {
 		kSession.destroy();
 	}
 
 	@Override
-	public void contextInitialized(ServletContextEvent arg0) {
+	public void contextInitialized(ServletContextEvent sce) {
 		droolsInit();
+		sce.getServletContext().setAttribute("ksession", kSession);
+		
 	}
 	
 	public static KieSession getKieSession() {
@@ -70,7 +72,6 @@ public class DroolsServletContextClass implements ServletContextListener {
         PricingResponse response = (PricingResponse) kSession.getObject(handle);
         System.out.println("Responded with PricingResponse:");
         System.out.println(response);
-        application.setAttribute("ksession", kSession);
 	}
 
 }
