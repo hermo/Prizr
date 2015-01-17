@@ -1,7 +1,9 @@
 package fi.floweb.prizr.rest;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.ws.rs.core.Context;
 
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
@@ -16,10 +18,12 @@ public class DroolsServletContextClass implements ServletContextListener {
 
 	public static KieSession kSession;
 	
+	@Context
+	private static ServletContext application;
+	
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
 		kSession.destroy();
-		
 	}
 
 	@Override
@@ -66,6 +70,7 @@ public class DroolsServletContextClass implements ServletContextListener {
         PricingResponse response = (PricingResponse) kSession.getObject(handle);
         System.out.println("Responded with PricingResponse:");
         System.out.println(response);
+        application.setAttribute("ksession", kSession);
 	}
 
 }

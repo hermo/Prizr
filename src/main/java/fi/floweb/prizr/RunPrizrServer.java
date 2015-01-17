@@ -3,14 +3,8 @@ package fi.floweb.prizr;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.kie.api.KieServices;
-import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.rule.FactHandle;
 
-import fi.floweb.prizr.beans.MultiplierBase;
-import fi.floweb.prizr.beans.PricingRequest;
-import fi.floweb.prizr.beans.PricingResponse;
 import fi.floweb.prizr.rest.DroolsServletContextClass;
 
 public class RunPrizrServer {
@@ -22,7 +16,7 @@ public class RunPrizrServer {
 		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
         context.addEventListener(new DroolsServletContextClass());
- 
+        
         Server jettyServer = new Server(8080);
         jettyServer.setHandler(context);
  

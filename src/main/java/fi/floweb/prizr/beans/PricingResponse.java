@@ -56,5 +56,17 @@ public class PricingResponse {
 	public void setPricingDone(boolean pricingDone) {
 		this.pricingDone = pricingDone;
 	}
+	
+	
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Article number: "+this.articleNum);
+		builder.append("Article category:"+this.articleCategory);
+		builder.append("Country: "+this.country);
+		builder.append("Place code: "+this.placeCode);
+		builder.append("Final price: "+this.price);
+		builder.append("Pricing done: "+this.pricingDone);
+		return builder.toString();
+	}
 
 }
