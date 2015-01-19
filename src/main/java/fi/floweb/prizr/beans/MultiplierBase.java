@@ -1,7 +1,11 @@
 package fi.floweb.prizr.beans;
 
-public class MultiplierBase {
+import java.io.Serializable;
 
+public class MultiplierBase implements Serializable {
+
+	private static final long serialVersionUID = -3304031619236159475L;
+	
 	String multiplierBaseName;  // hintakertoimen nimi
 	String multiplierBaseDescription; // kuvaus mihin hintakerrointa sovelletaan
 	String appliesToCategory; // mihin kategoriaan kerrointa sovelletaan.
