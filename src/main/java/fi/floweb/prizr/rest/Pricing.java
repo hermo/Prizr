@@ -1,5 +1,8 @@
 package fi.floweb.prizr.rest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -11,37 +14,24 @@ import javax.ws.rs.core.MediaType;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 
+import fi.floweb.prizr.beans.MultiplierBase;
 import fi.floweb.prizr.beans.PricingRequest;
 import fi.floweb.prizr.beans.PricingResponse;
+import fi.floweb.prizr.facts.FactStorage;
+import fi.floweb.prizr.facts.FactStorageMongoDBImpl;
 
 @Path("/basic")
 public class Pricing {
 
 	@Context
 	private ServletContext application;
-	
-  // This method is called if TEXT_PLAIN is request
+
   @GET
-  @Produces(MediaType.TEXT_PLAIN)
+  @Produces(MediaType.APPLICATION_JSON)
   public String sayPlainTextHello() {
-    return "Hello Jersey";
+    return "OK";
   }
-
-  // This method is called if XML is request
-  @GET
-  @Produces(MediaType.TEXT_XML)
-  public String sayXMLHello() {
-    return "<?xml version=\"1.0\"?>" + "<hello> Hello Jersey" + "</hello>";
-  }
-
-  // This method is called if HTML is request
-  @GET
-  @Produces(MediaType.TEXT_HTML)
-  public String sayHtmlHello() {
-    return "<html> " + "<title>" + "Hello Jersey" + "</title>"
-        + "<body><h1>" + "Hello Jersey" + "</body></h1>" + "</html> ";
-  }
-  
+ 
   @POST
   @Produces(MediaType.APPLICATION_JSON)
   public PricingResponse getPricing(PricingRequest req) {
@@ -58,6 +48,28 @@ public class Pricing {
 	      System.out.println(response);
 	      return response;
 	  }
+  }
+  
+  @Path("/rules")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public MultiplierBase[] getRules() {
+	  System.out.println("Got request to return rules...");
+	  FactStorage storage = new FactStorageMongoDBImpl();
+	  ArrayList<MultiplierBase> rules = storage.getFacts();
+	  MultiplierBase[] res = new MultiplierBase[rules.size()]; 
+	  rules.toArray(res);
+	  return res;
+  }
+  
+  @Path("/rules")
+  @POST
+  @Produces(MediaType.APPLICATION_JSON)
+  public String setRule(MultiplierBase rule) {
+	  System.out.println("Got request to set rule: "+rule.getMultiplierBaseName());
+	  FactStorage storage = new FactStorageMongoDBImpl();
+	  storage.storeFact(rule);
+	  return "OK";
   }
 
 } 

@@ -3,6 +3,7 @@ package fi.floweb.prizr;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.persistence.jaxb.rs.MOXyJsonProvider;
 import org.kie.api.runtime.KieSession;
 
 import fi.floweb.prizr.rest.DroolsServletContextClass;
@@ -28,7 +29,8 @@ public class RunPrizrServer {
         jerseyServlet.setInitParameter(
            "jersey.config.server.provider.classnames",
            fi.floweb.prizr.rest.Pricing.class.getCanonicalName());
-                
+        MOXyJsonProvider moxyJsonProvider = new MOXyJsonProvider();
+        moxyJsonProvider.setWrapperAsArrayName(true);
         System.out.println("Init done.");
         try {
         	System.out.println("Starting...");

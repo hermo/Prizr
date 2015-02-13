@@ -13,10 +13,13 @@ import org.kie.api.runtime.rule.FactHandle;
 import fi.floweb.prizr.beans.MultiplierBase;
 import fi.floweb.prizr.beans.PricingRequest;
 import fi.floweb.prizr.beans.PricingResponse;
+import fi.floweb.prizr.facts.FactStorage;
+import fi.floweb.prizr.facts.FactStorageMongoDBImpl;
 
 public class DroolsServletContextClass implements ServletContextListener {
 
 	public static KieSession kSession;
+	public static FactStorage factStorage;
 	
 	@Context
 	private static ServletContext application;
@@ -28,9 +31,16 @@ public class DroolsServletContextClass implements ServletContextListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
+		factStorageInit();
 		droolsInit();
 		sce.getServletContext().setAttribute("ksession", kSession);
-		
+	}
+	
+	private void factStorageInit() {
+		System.out.println("Init fact storage...");
+		factStorage = new FactStorageMongoDBImpl();
+		System.out.println("OK.");
+
 	}
 	
 	public static KieSession getKieSession() {

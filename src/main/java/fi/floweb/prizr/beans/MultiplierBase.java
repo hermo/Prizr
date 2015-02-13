@@ -13,6 +13,10 @@ public class MultiplierBase implements Serializable {
 	boolean isDomestic; // onko kotimaahan vai ulkomaille
 	boolean includesFreight; // sisällytetäänkö rahti hintaan
 	float multiplier; // säännön kerroin kerroin
+	
+	public MultiplierBase() {
+	}
+	
 	public String getMultiplierBaseName() {
 		return multiplierBaseName;
 	}
