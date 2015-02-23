@@ -1,5 +1,7 @@
 package fi.floweb.prizr.beans;
 
+import com.owlike.genson.Genson;
+
 public class PricingRequest {
 
 	String articleNum; // "nimike nro"
@@ -44,6 +46,10 @@ public class PricingRequest {
 	}
 	public void setPurchasePrice(float purchasePrice) {
 		this.purchasePrice = purchasePrice;
+	}
+	
+	public String toString() {
+		return new Genson().serialize(this);
 	}
 
 }

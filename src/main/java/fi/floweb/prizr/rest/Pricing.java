@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -54,7 +55,6 @@ public class Pricing {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public MultiplierBase[] getRules() {
-	  System.out.println("Got request to return rules...");
 	  FactStorage storage = new FactStorageMongoDBImpl();
 	  ArrayList<MultiplierBase> rules = storage.getFacts();
 	  MultiplierBase[] res = new MultiplierBase[rules.size()]; 
@@ -66,7 +66,6 @@ public class Pricing {
   @POST
   @Produces(MediaType.APPLICATION_JSON)
   public String setRule(MultiplierBase rule) {
-	  System.out.println("Got request to set rule: "+rule.getMultiplierBaseName());
 	  FactStorage storage = new FactStorageMongoDBImpl();
 	  storage.storeFact(rule);
 	  return "OK";
