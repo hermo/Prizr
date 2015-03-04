@@ -15,6 +15,8 @@ import javax.ws.rs.core.MediaType;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 
+import com.owlike.genson.Genson;
+
 import fi.floweb.prizr.beans.MultiplierBase;
 import fi.floweb.prizr.beans.PricingRequest;
 import fi.floweb.prizr.beans.PricingResponse;
@@ -65,10 +67,11 @@ public class Pricing {
   @Path("/rules")
   @POST
   @Produces(MediaType.APPLICATION_JSON)
-  public String setRule(MultiplierBase rule) {
+  public MultiplierBase setRule(MultiplierBase rule) {
 	  FactStorage storage = new FactStorageMongoDBImpl();
 	  storage.storeFact(rule);
-	  return "OK";
+	  return rule;
   }
 
+  
 } 

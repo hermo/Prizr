@@ -19,7 +19,7 @@ public class RunPrizrServer {
 	public static KieSession kSession = null;
 
 	public static void main(String[] args) throws Exception {
-		System.out.println("Initializing Jersey/Jetty server...");
+		System.out.println("Initializing Jersey and Jetty server...");
 		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
         context.addEventListener(new DroolsServletContextClass());
@@ -36,7 +36,12 @@ public class RunPrizrServer {
         jerseyServlet.setInitParameter(
            "jersey.config.server.provider.classnames",
            fi.floweb.prizr.rest.Pricing.class.getCanonicalName());
-   
+        // log verbose
+        jerseyServlet.setInitParameter(
+        	"jersey.config.server.tracing","ALL");
+        jerseyServlet.setInitParameter(
+        		"jersey.config.server.tracing.threshold", "VERBOSE");
+        
         MOXyJsonProvider moxyJsonProvider = new MOXyJsonProvider();
         moxyJsonProvider.setWrapperAsArrayName(true);
    

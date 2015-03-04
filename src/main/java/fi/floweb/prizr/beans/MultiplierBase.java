@@ -12,7 +12,7 @@ public class MultiplierBase implements Serializable {
 	String appliesToLocation; // mihin toimipisteeseen mätsää
 	boolean isDomestic; // onko kotimaahan vai ulkomaille
 	boolean includesFreight; // sisällytetäänkö rahti hintaan
-	float multiplier; // säännön kerroin kerroin
+	double multiplier; // säännön kerroin kerroin
 	
 	public MultiplierBase() {
 	}
@@ -53,10 +53,10 @@ public class MultiplierBase implements Serializable {
 	public void setIncludesFreight(boolean includesFreight) {
 		this.includesFreight = includesFreight;
 	}
-	public float getMultiplier() {
+	public double getMultiplier() {
 		return multiplier;
 	}
-	public void setMultiplier(float multiplier) {
+	public void setMultiplier(double multiplier) {
 		this.multiplier = multiplier;
 	}
 	

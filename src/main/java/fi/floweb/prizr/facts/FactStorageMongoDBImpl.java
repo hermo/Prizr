@@ -80,8 +80,7 @@ public class FactStorageMongoDBImpl implements FactStorage {
 		MultiplierBase res = new MultiplierBase();
 		res.setAppliesToCategory((String)db.get("appliesToCategory"));
 		res.setAppliesToLocation((String)db.get("appliesToLocation"));
-		//???
-		//res.setMultiplier((Float)db.get("multiplier"));
+		res.setMultiplier((Double)db.get("multiplier"));
 		res.setMultiplierBaseDescription((String)db.get("multiplierBaseDescription"));
 		res.setMultiplierBaseName((String)db.get("multiplierBaseName"));
 		res.setDomestic((Boolean)db.get("isDomestic"));

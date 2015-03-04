@@ -21,7 +21,7 @@ rule "Category, country and place code determine which pricemultiplier should be
 		$preq : PricingRequest()
 		$multiplier : MultiplierBase( appliesToCategory == $articleCategory, appliesToLocation == $placeCode)
 	then
-		float newPrice = $preq.getPurchasePrice()*$multiplier.getMultiplier();
+		double newPrice = $preq.getPurchasePrice()*$multiplier.getMultiplier();
 		$pres.setPrice(newPrice);
 		$pres.setPricingDone(true);
 		System.out.println("Purchaseprice: "+$preq.getPurchasePrice());

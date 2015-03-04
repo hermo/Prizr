@@ -2,18 +2,18 @@ package fi.floweb.prizr.beans;
 
 public class PricingResponse {
 	
-	private float price;
+	private double price;
 	String articleNum; // "nimike nro"
 	String articleCategory; // "nimikekatogoria"
 	String country; // "kotimainen, ulkomainen, kotimainen = FI
-	String placeCode; //sijaintikoodi, TKT, HKT etc
+	String placeCode; //sijaintikoodi 
 	boolean pricingDone; // onko hinnoittelu valmis
 
-	public float getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(float price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 

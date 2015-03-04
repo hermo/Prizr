@@ -47,6 +47,11 @@ public class DroolsServletContextClass implements ServletContextListener {
 		return kSession;
 	}
 	
+	/**
+	 * Init the drools engine. Tests with one pricingrequest which throws
+	 * an exception if init is not done properly
+	 */
+	
 	public static void droolsInit() {
 		// load up the knowledge base
 		System.out.println("Drools engine initializing");
