@@ -11,6 +11,7 @@ rule "Each pricingresponse should be based on same attributes as there are in re
         $pres.setArticleCategory($preq.getArticleCategory());
         $pres.setCountry($preq.getCountry());
         $pres.setPlaceCode($preq.getPlaceCode());
+        $pres.setPrice($preq.getPurchasePrice());
         update( $pres );
 end
 
