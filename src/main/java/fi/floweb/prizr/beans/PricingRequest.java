@@ -49,7 +49,14 @@ public class PricingRequest {
 	}
 	
 	public String toString() {
-		return new Genson().serialize(this);
+		StringBuilder builder = new StringBuilder();
+		builder.append("\nArticle number: "+this.articleNum);
+		builder.append("\nArticle category: "+this.articleCategory);
+		builder.append("\nCountry: "+this.country); 
+		builder.append("\nPlace code: "+this.placeCode); 
+		builder.append("\nCargo per unit: "+this.cargoPerUnit);
+		builder.append("\nPurchase Price: "+this.purchasePrice);
+		return builder.toString();
 	}
 
 }

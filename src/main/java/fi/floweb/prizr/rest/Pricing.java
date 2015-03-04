@@ -43,6 +43,8 @@ public class Pricing {
 	  if(kSession == null) {
 		  return null;
 	  } else {
+		  System.out.println("Got pricingRequest:");
+		  System.out.println(req);
 		  kSession.insert(req);
 		  PricingResponse res = new PricingResponse();
 		  FactHandle resHandle = kSession.insert(res);
@@ -75,7 +77,7 @@ public class Pricing {
   }
   
   @Path("/rules")
-  @DELETE
+  @DELETE	
   @Produces(MediaType.APPLICATION_JSON)
   public String deleteRune(String ruleId) {
 	  FactStorage storage = new FactStorageMongoDBImpl();
