@@ -1,6 +1,10 @@
 package fi.floweb.prizr.rest;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -29,7 +33,11 @@ public class Pricing {
 
 	@Context
 	private ServletContext application;
-
+	// Used to store Facthandles of rules which are saved and deleted.
+	// This way we can insert and remove those to/from the engine when needed
+	private static HashMap<String, FactHandle> factHandleCache = new HashMap<String,FactHandle>();
+	
+	
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public String sayPlainTextHello() {
@@ -45,13 +53,18 @@ public class Pricing {
 	  } else {
 		  System.out.println("Got pricingRequest:");
 		  System.out.println(req);
-		  kSession.insert(req);
+		  FactHandle reqHandle = kSession.insert(req);
 		  PricingResponse res = new PricingResponse();
 		  FactHandle resHandle = kSession.insert(res);
 	      kSession.fireAllRules();
 	      PricingResponse response = (PricingResponse) kSession.getObject(resHandle);
+	      kSession.delete(resHandle);
+	      kSession.delete(reqHandle);
 	      System.out.println("Responded with PricingResponse:");
 	      System.out.println(response);
+	      double resPrice = response.getPrice();
+	      BigDecimal bd = new BigDecimal(resPrice);
+	      response.setPrice(bd.setScale(2, RoundingMode.HALF_UP).doubleValue());
 	      return response;
 	  }
   }
@@ -73,15 +86,20 @@ public class Pricing {
   public MultiplierBase setRule(MultiplierBase rule) {
 	  FactStorage storage = new FactStorageMongoDBImpl();
 	  storage.storeFact(rule);
+	  KieSession kSession = (KieSession) application.getAttribute("ksession");
+	  FactHandle handle = kSession.insert(rule);
+	  factHandleCache.put(rule.getId(), handle);
 	  return rule;
   }
   
   @Path("/rules")
   @DELETE	
   @Produces(MediaType.APPLICATION_JSON)
-  public String deleteRune(String ruleId) {
+  public String deleteRule(String ruleId) {
 	  FactStorage storage = new FactStorageMongoDBImpl();
 	  if(storage.deleteFact(ruleId)) {
+		  KieSession kSession = (KieSession) application.getAttribute("ksession");
+		  kSession.delete(factHandleCache.get(ruleId));
 		  return "OK";
 	  } else {
 		  return "FAILED";
