@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -78,6 +80,8 @@ public class FactStorageMongoDBImpl implements FactStorage {
 
 	private MultiplierBase DBObjectToMultiplierBase(DBObject db) {
 		MultiplierBase res = new MultiplierBase();
+		ObjectId uniqueId = (ObjectId)db.get("_id");
+		res.setId(uniqueId.toString());
 		res.setAppliesToCategory((String)db.get("appliesToCategory"));
 		res.setAppliesToLocation((String)db.get("appliesToLocation"));
 		res.setMultiplier((Double)db.get("multiplier"));

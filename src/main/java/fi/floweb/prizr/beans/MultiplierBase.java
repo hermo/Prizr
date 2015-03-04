@@ -6,6 +6,7 @@ public class MultiplierBase implements Serializable {
 
 	private static final long serialVersionUID = -3304031619236159475L;
 	
+	String id; // unique id
 	String multiplierBaseName;  // hintakertoimen nimi
 	String multiplierBaseDescription; // kuvaus mihin hintakerrointa sovelletaan
 	String appliesToCategory; // mihin kategoriaan kerrointa sovelletaan.
@@ -17,6 +18,14 @@ public class MultiplierBase implements Serializable {
 	public MultiplierBase() {
 	}
 	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public String getMultiplierBaseName() {
 		return multiplierBaseName;
 	}
