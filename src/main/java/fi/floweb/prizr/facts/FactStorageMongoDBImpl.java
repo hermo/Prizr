@@ -60,9 +60,18 @@ public class FactStorageMongoDBImpl implements FactStorage {
 	}
 
 	@Override
-	public boolean deleteFact(String baseName) {
+	public boolean deleteFact(String objectId) {
 		init();
-		return false;
+		ObjectId _id;
+		try {
+			_id = new ObjectId(objectId);
+		} catch (IllegalArgumentException e) {
+			System.out.println("Failed to convert to object ID item: "+objectId);
+			return false;
+		}
+		DBObject toRemove = new BasicDBObject("_id", _id);
+		coll.remove(toRemove);
+		return true;
 	}
 	
 	private DBObject multiplierBaseToDBObject(MultiplierBase mb) {
