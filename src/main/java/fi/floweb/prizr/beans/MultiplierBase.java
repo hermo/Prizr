@@ -12,6 +12,7 @@ public class MultiplierBase implements Serializable {
 	String appliesToCategory; // mihin kategoriaan kerrointa sovelletaan.
 	String appliesToLocation; // mihin toimipisteeseen mätsää
 	boolean isDomestic; // onko kotimaahan vai ulkomaille
+	String countryCode; 
 	boolean includesFreight; // sisällytetäänkö rahti hintaan
 	double multiplier; // säännön kerroin kerroin
 	
@@ -56,6 +57,15 @@ public class MultiplierBase implements Serializable {
 	public void setDomestic(boolean isDomestic) {
 		this.isDomestic = isDomestic;
 	}
+	
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
+	}
+
 	public boolean isIncludesFreight() {
 		return includesFreight;
 	}

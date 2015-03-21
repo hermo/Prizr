@@ -30,7 +30,7 @@ public class FactStorageMongoDBImpl implements FactStorage {
 	private static void init() {
 		if (mongoClient == null) {
 			try {
-				mongoClient = new MongoClient( "localhost" );
+				mongoClient = new MongoClient( "localhost:27017" );
 			} catch (UnknownHostException e) {
 				System.exit(1);
 			}
@@ -82,6 +82,7 @@ public class FactStorageMongoDBImpl implements FactStorage {
 		res.put("multiplierBaseDescription", mb.getMultiplierBaseDescription());
 		res.put("multiplierBaseName", mb.getMultiplierBaseName());
 		res.put("isDomestic",mb.isDomestic());
+		res.put("countryCode", mb.getCountryCode());
 		res.put("includesFreight", mb.isIncludesFreight());
 		return res;
 		
@@ -97,6 +98,7 @@ public class FactStorageMongoDBImpl implements FactStorage {
 		res.setMultiplierBaseDescription((String)db.get("multiplierBaseDescription"));
 		res.setMultiplierBaseName((String)db.get("multiplierBaseName"));
 		res.setDomestic((Boolean)db.get("isDomestic"));
+		res.setCountryCode((String)db.get("countryCode"));
 		res.setIncludesFreight((Boolean)db.get("includesFreight"));
 		return res;
 		
