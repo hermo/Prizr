@@ -81,9 +81,11 @@ public class FactStorageMongoDBImpl implements FactStorage {
 		res.put("multiplier",mb.getMultiplier());
 		res.put("multiplierBaseDescription", mb.getMultiplierBaseDescription());
 		res.put("multiplierBaseName", mb.getMultiplierBaseName());
+		res.put("shopName", mb.getShopName());
 		res.put("isDomestic",mb.isDomestic());
 		res.put("countryCode", mb.getCountryCode());
-		res.put("includesFreight", mb.isIncludesFreight());
+		res.put("includesFreight", mb.getIncludesFreight());
+		res.put("freightMultiplier", mb.getFreightMultiplier());
 		return res;
 		
 	}
@@ -97,9 +99,11 @@ public class FactStorageMongoDBImpl implements FactStorage {
 		res.setMultiplier((Double)db.get("multiplier"));
 		res.setMultiplierBaseDescription((String)db.get("multiplierBaseDescription"));
 		res.setMultiplierBaseName((String)db.get("multiplierBaseName"));
+		res.setShopName((String)db.get("shopName"));
 		res.setDomestic((Boolean)db.get("isDomestic"));
 		res.setCountryCode((String)db.get("countryCode"));
-		res.setIncludesFreight((Boolean)db.get("includesFreight"));
+		res.setIncludesFreight((Double)db.get("includesFreight"));
+		res.setFreightMultiplier((Double)db.get("freightMultiplier"));
 		return res;
 		
 	}

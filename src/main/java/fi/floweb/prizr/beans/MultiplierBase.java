@@ -13,8 +13,10 @@ public class MultiplierBase implements Serializable {
 	String appliesToLocation; // mihin toimipisteeseen mätsää
 	boolean isDomestic; // onko kotimaahan vai ulkomaille
 	String countryCode; 
-	boolean includesFreight; // sisällytetäänkö rahti hintaan
-	double multiplier; // säännön kerroin kerroin
+	String shopName; 
+	double includesFreight; // amount of freight costs
+	double multiplier; // säännön kerroin
+	double freightMultiplier; // rahtikerroin
 	
 	public MultiplierBase() {
 	}
@@ -65,11 +67,19 @@ public class MultiplierBase implements Serializable {
 	public void setCountryCode(String countryCode) {
 		this.countryCode = countryCode;
 	}
+	
+	public String getShopName() {
+		return shopName;
+	}
 
-	public boolean isIncludesFreight() {
+	public void setShopName(String shopName) {
+		this.shopName = shopName;
+	}
+
+	public double getIncludesFreight() {
 		return includesFreight;
 	}
-	public void setIncludesFreight(boolean includesFreight) {
+	public void setIncludesFreight(double includesFreight) {
 		this.includesFreight = includesFreight;
 	}
 	public double getMultiplier() {
@@ -78,5 +88,14 @@ public class MultiplierBase implements Serializable {
 	public void setMultiplier(double multiplier) {
 		this.multiplier = multiplier;
 	}
+
+	public double getFreightMultiplier() {
+		return freightMultiplier;
+	}
+
+	public void setFreightMultiplier(double freightMultiplier) {
+		this.freightMultiplier = freightMultiplier;
+	}
+	
 	
 }
