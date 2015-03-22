@@ -41,7 +41,7 @@ public class Pricing {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public String sayPlainTextHello() {
-    return "OK";
+    return "{\"status\": \"OK\"}";
   }
  
   @POST
