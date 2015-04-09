@@ -56,7 +56,8 @@ public class Pricing {
 		  FactHandle reqHandle = kSession.insert(req);
 		  PricingResponse res = new PricingResponse();
 		  FactHandle resHandle = kSession.insert(res);
-	      kSession.fireAllRules();
+	      int rulesFired = kSession.fireAllRules();
+	      System.out.println("Rules matched: "+rulesFired);
 	      PricingResponse response = (PricingResponse) kSession.getObject(resHandle);
 	      kSession.delete(resHandle);
 	      kSession.delete(reqHandle);

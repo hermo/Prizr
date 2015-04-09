@@ -1,31 +1,24 @@
 package fi.floweb
  
 import fi.floweb.prizr.beans.*;
- 
-rule "Each pricingresponse should be based on same attributes as there are in request"
-    when
-        $pres : PricingResponse( articleNum == null, articleCategory == null, country == null, placeCode == null)
-        $preq : PricingRequest()
-    then
-        $pres.setArticleNum($preq.getArticleNum());
-        $pres.setArticleCategory($preq.getArticleCategory());
-        $pres.setCountry($preq.getCountry());
-        $pres.setPlaceCode($preq.getPlaceCode());
-        $pres.setPrice($preq.getPurchasePrice());
-        update( $pres );
-end
 
-rule "Category, country and place code determine which pricemultiplier should be used"
+rule "Category, country and location code determine which pricemultiplier should be used"
 	when 
-		$pres : PricingResponse( country != null, articleCategory != null, placeCode != null, pricingDone == false)
-		PricingResponse( $country : country, $articleCategory : articleCategory, $placeCode : placeCode)
 		$preq : PricingRequest()
-		$multiplier : MultiplierBase( appliesToCategory == $articleCategory, appliesToLocation == $placeCode)
+		$pres : PricingResponse(pricingDone == false)
+		$multiplier : MultiplierBase(appliesToLocation == $preq.locationCode && 
+									countryCode == $preq.countryCode &&
+									appliesToCategory == $preq.itemCategoryCode)
 	then
-		double newPrice = $preq.getPurchasePrice()*$multiplier.getMultiplier();
-		$pres.setPrice(newPrice);
+		System.out.println("Request on then: "+$preq);
+		System.out.println("Multiplier on then: "+$multiplier);
+		double newPrice = $preq.getSalesPrice()*$multiplier.getMultiplier();
+		double transit = $preq.getItemStandardCost()+($multiplier.getIncludesFreight() / $preq.getItemUnitCC());
+		transit = transit * $multiplier.getFreightMultiplier();
+		double finalPrice = newPrice + transit; 
+		$pres.setPrice(finalPrice);
 		$pres.setPricingDone(true);
-		System.out.println("Purchaseprice: "+$preq.getPurchasePrice());
+		System.out.println("Purchaseprice: "+$preq.getSalesPrice());
 		System.out.println("Multiplied price: "+$pres.getPrice());
 		update( $pres )
 end

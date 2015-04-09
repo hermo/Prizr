@@ -23,22 +23,26 @@ public class RunPrizrTest {
 
         	// fact
         	MultiplierBase base = new MultiplierBase();
-        	base.setAppliesToCategory("testCategory");
-        	base.setAppliesToLocation("testplace");
+        	base.setAppliesToCategory("CATEGORY");
+        	base.setAppliesToLocation("LOCATION");
+        	base.setCountryCode("FI");
         	base.setMultiplier(2.5f);
+        	base.setFreightMultiplier(2);
         	
         	MultiplierBase baseAnother = new MultiplierBase();
         	baseAnother.setAppliesToCategory("someOtherCategory");
-        	baseAnother.setAppliesToLocation("testplace");
+        	baseAnother.setAppliesToLocation("someOtherLocation");
+        	baseAnother.setCountryCode("FI");
         	baseAnother.setMultiplier(100f);
+        	baseAnother.setFreightMultiplier(10);
         	
             // go !
             PricingRequest preq = new PricingRequest();
-            preq.setArticleNum("testArticleNum");
-            preq.setArticleCategory("testCategory");
-            preq.setCountry("testCountry");
-            preq.setPlaceCode("testplace");
-            preq.setPurchasePrice(10);
+            preq.setLocationCode("LOCATION");
+            preq.setItemCategoryCode("CATEGORY");
+            preq.setCountryCode("FI");
+            preq.setItemUnitCC(10);
+            preq.setSalesPrice(10);
             
             
             PricingResponse pres = new PricingResponse();

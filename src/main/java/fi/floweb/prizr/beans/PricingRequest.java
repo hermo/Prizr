@@ -1,62 +1,64 @@
 package fi.floweb.prizr.beans;
 
-import com.owlike.genson.Genson;
-
 public class PricingRequest {
 
-	String articleNum; // "nimike nro"
-	String articleCategory; // "nimikekatogoria"
-	String country; // "kotimainen, ulkomainen, kotimainen = FI
-	String placeCode; //sijaintikoodi, 
-	float cargoPerUnit; // rahtihinta per kpl
-	double purchasePrice; // ostohinta, viimeisin yksikkökustannus
+	String locationCode;
+	String countryCode;
+	String itemCategoryCode;
+	double salesPrice;
+	double itemStandardCost;
+	int itemUnitCC;
 	
-	public String getArticleNum() {
-		return articleNum;
+	public PricingRequest() {	
 	}
-	public void setArticleNum(String articleNum) {
-		this.articleNum = articleNum;
+	
+	public String getLocationCode() {
+		return locationCode;
 	}
-	public String getArticleCategory() {
-		return articleCategory;
+	public void setLocationCode(String locationCode) {
+		this.locationCode = locationCode;
 	}
-	public void setArticleCategory(String articleCategory) {
-		this.articleCategory = articleCategory;
+	public String getCountryCode() {
+		return countryCode;
 	}
-	public String getCountry() {
-		return country;
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
 	}
-	public void setCountry(String country) {
-		this.country = country;
+	public String getItemCategoryCode() {
+		return itemCategoryCode;
 	}
-	public String getPlaceCode() {
-		return placeCode;
+	public void setItemCategoryCode(String itemCategoryCode) {
+		this.itemCategoryCode = itemCategoryCode;
 	}
-	public void setPlaceCode(String placeCode) {
-		this.placeCode = placeCode;
+	public double getSalesPrice() {
+		return salesPrice;
 	}
-	public float getCargoPerUnit() {
-		return cargoPerUnit;
+	public void setSalesPrice(double salesPrice) {
+		this.salesPrice = salesPrice;
 	}
-	public void setCargoPerUnit(float cargoPerUnit) {
-		this.cargoPerUnit = cargoPerUnit;
+	public double getItemStandardCost() {
+		return itemStandardCost;
 	}
-	public double getPurchasePrice() {
-		return purchasePrice;
+	public void setItemStandardCost(double itemStandardCost) {
+		this.itemStandardCost = itemStandardCost;
 	}
-	public void setPurchasePrice(float purchasePrice) {
-		this.purchasePrice = purchasePrice;
+	public int getItemUnitCC() {
+		return itemUnitCC;
+	}
+	public void setItemUnitCC(int itemUnitCC) {
+		this.itemUnitCC = itemUnitCC;
 	}
 	
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("\nArticle number: "+this.articleNum);
-		builder.append("\nArticle category: "+this.articleCategory);
-		builder.append("\nCountry: "+this.country); 
-		builder.append("\nPlace code: "+this.placeCode); 
-		builder.append("\nCargo per unit: "+this.cargoPerUnit);
-		builder.append("\nPurchase Price: "+this.purchasePrice);
-		return builder.toString();
+		StringBuffer buf = new StringBuffer();
+		buf.append("locationCode: "+locationCode);
+		buf.append("countryCode: "+countryCode);
+		buf.append("itemCategoryCode: "+itemCategoryCode);
+		buf.append("salesPrice: "+salesPrice);
+		buf.append("itemStandardCost: "+itemStandardCost);
+		buf.append("itemUnitCC: "+itemUnitCC);
+		return buf.toString();
 	}
+	
 
 }
