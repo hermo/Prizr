@@ -12,7 +12,7 @@ rule "Category, country and location code determine which pricemultiplier should
 	then
 		System.out.println("Request on then: "+$preq);
 		System.out.println("Multiplier on then: "+$multiplier);
-		double newPrice = $preq.getSalesPrice()*$multiplier.getMultiplier();
+		double newPrice = $preq.getSalesPrice()*$preq.getComission()*$multiplier.getMultiplier();
 		double transit = $preq.getItemStandardCost()+($multiplier.getIncludesFreight() / $preq.getItemUnitCC());
 		transit = transit * $multiplier.getFreightMultiplier();
 		double finalPrice = newPrice + transit; 
