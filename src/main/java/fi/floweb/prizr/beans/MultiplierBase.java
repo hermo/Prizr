@@ -11,6 +11,7 @@ public class MultiplierBase implements Serializable {
 	String multiplierBaseDescription; // kuvaus mihin hintakerrointa sovelletaan
 	String appliesToCategory; // mihin kategoriaan kerrointa sovelletaan.
 	String appliesToLocation; // mihin toimipisteeseen mätsää
+	String appliesToShopCode; // mihin kauppaan mätsää
 	boolean isDomestic; // onko kotimaahan vai ulkomaille
 	String countryCode; 
 	String shopName; 
@@ -96,6 +97,13 @@ public class MultiplierBase implements Serializable {
 	public void setFreightMultiplier(double freightMultiplier) {
 		this.freightMultiplier = freightMultiplier;
 	}
-	
+
+	public String getAppliesToShopCode() {
+		return appliesToShopCode;
+	}
+
+	public void setAppliesToShopCode(String appliesToShopCode) {
+		this.appliesToShopCode = appliesToShopCode;
+	}
 	
 }

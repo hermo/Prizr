@@ -8,7 +8,8 @@ public class PricingRequest {
 	double salesPrice;
 	double itemStandardCost;
 	int itemUnitCC;
-	double comission;
+	double commission;
+	String shopCode;
 	
 	public PricingRequest() {	
 	}
@@ -49,12 +50,20 @@ public class PricingRequest {
 	public void setItemUnitCC(int itemUnitCC) {
 		this.itemUnitCC = itemUnitCC;
 	}
-	public double getComission() {
-		return comission;
+	public double getCommission() {
+		return commission;
 	}
-	public void setComission(double comission) {
-		this.comission = comission;
+	public void setCommission(double comission) {
+		this.commission = comission;
 	}
+	public String getShopCode() {
+		return shopCode;
+	}
+
+	public void setShopCode(String shopCode) {
+		this.shopCode = shopCode;
+	}
+
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
 		buf.append("locationCode: "+locationCode);
@@ -63,7 +72,8 @@ public class PricingRequest {
 		buf.append("salesPrice: "+salesPrice);
 		buf.append("itemStandardCost: "+itemStandardCost);
 		buf.append("itemUnitCC: "+itemUnitCC);
-		buf.append("comission:"+comission);
+		buf.append("comission:"+commission);
+		buf.append("shopCode: "+shopCode);
 		return buf.toString();
 	}
 	

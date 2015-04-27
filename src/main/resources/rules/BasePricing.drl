@@ -8,11 +8,12 @@ rule "Category, country and location code determine which pricemultiplier should
 		$pres : PricingResponse(pricingDone == false)
 		$multiplier : MultiplierBase(appliesToLocation == $preq.locationCode && 
 									countryCode == $preq.countryCode &&
-									appliesToCategory == $preq.itemCategoryCode)
+									appliesToCategory == $preq.itemCategoryCode &&
+									appliesToShopCode == $preq.shopCode)
 	then
 		System.out.println("Request on then: "+$preq);
 		System.out.println("Multiplier on then: "+$multiplier);
-		double newPrice = $preq.getSalesPrice()*$preq.getComission()*$multiplier.getMultiplier();
+		double newPrice = $preq.getSalesPrice()*$preq.getCommission()*$multiplier.getMultiplier();
 		double transit = $preq.getItemStandardCost()+($multiplier.getIncludesFreight() / $preq.getItemUnitCC());
 		transit = transit * $multiplier.getFreightMultiplier();
 		double finalPrice = newPrice + transit; 
