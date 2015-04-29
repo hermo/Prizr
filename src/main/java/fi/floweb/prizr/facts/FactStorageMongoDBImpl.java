@@ -21,11 +21,12 @@ import fi.floweb.prizr.beans.MultiplierBase;
 public class FactStorageMongoDBImpl implements FactStorage {
 
 	private static final String FACTCOLLECTION = "facts";
-	private static final String DBNAME = "prizr";
+	private static final String DBNAME_DEFAULT = "prizr";
 	
 	private static MongoClient mongoClient = null;
 	private static DB db = null;
 	private static DBCollection coll = null;
+	private static String currentDbName = null;
 	
 	private static void init() {
 		if (mongoClient == null) {
@@ -34,9 +35,17 @@ public class FactStorageMongoDBImpl implements FactStorage {
 			} catch (UnknownHostException e) {
 				System.exit(1);
 			}
-			db = mongoClient.getDB(DBNAME);
+			if(currentDbName == null) {
+				db = mongoClient.getDB(DBNAME_DEFAULT);
+			} else {
+				db = mongoClient.getDB(currentDbName);
+			}
 			coll = db.getCollection(FACTCOLLECTION); 
 		}
+	}
+	
+	public FactStorageMongoDBImpl(String dbName) {
+		currentDbName = dbName;
 	}
 	
 	@Override

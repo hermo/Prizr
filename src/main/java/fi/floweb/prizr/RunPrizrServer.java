@@ -19,15 +19,27 @@ public class RunPrizrServer {
 	public static KieSession kSession = null;
 
 	public static void main(String[] args) throws Exception {
+		String dbName = null;
+		Integer port = null;
+		try {
+			dbName = args[0];
+			port = Integer.parseInt(args[1]);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("You need to specify two input parameters: [dbname] [port]");
+			System.exit(1);
+		} catch (NumberFormatException e) {
+			System.out.println("Your port designation needs to be an integer, like 8080.");
+			System.exit(1);
+		}
 		System.out.println("Initializing Jersey and Jetty server...");
 		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
-        context.addEventListener(new DroolsServletContextClass());
+        context.addEventListener(new DroolsServletContextClass(dbName));
         FilterHolder holder = new FilterHolder();
         holder.setFilter(new CORSFilter());
         context.addFilter(holder, "/*", EnumSet.of(DispatcherType.REQUEST));
         
-        Server jettyServer = new Server(8080);
+        Server jettyServer = new Server(port);
         jettyServer.setHandler(context);
         ServletHolder jerseyServlet = context.addServlet(
              org.glassfish.jersey.servlet.ServletContainer.class, "/*");
@@ -47,7 +59,7 @@ public class RunPrizrServer {
    
         System.out.println("Starting...");
         jettyServer.start();
-        System.out.println("Started at port 8080. Joining...");
+        System.out.println("Started at port "+port+". Joining...");
         jettyServer.join();
        
     }

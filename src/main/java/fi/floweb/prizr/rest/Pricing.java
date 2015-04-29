@@ -74,7 +74,8 @@ public class Pricing {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public MultiplierBase[] getRules() {
-	  FactStorage storage = new FactStorageMongoDBImpl();
+	  String dbName = (String) application.getAttribute("dbName");
+	  FactStorage storage = new FactStorageMongoDBImpl(dbName);
 	  ArrayList<MultiplierBase> rules = storage.getFacts();
 	  MultiplierBase[] res = new MultiplierBase[rules.size()]; 
 	  rules.toArray(res);
@@ -85,7 +86,8 @@ public class Pricing {
   @POST
   @Produces(MediaType.APPLICATION_JSON)
   public MultiplierBase setRule(MultiplierBase rule) {
-	  FactStorage storage = new FactStorageMongoDBImpl();
+	  String dbName = (String) application.getAttribute("dbName");
+	  FactStorage storage = new FactStorageMongoDBImpl(dbName);
 	  storage.storeFact(rule);
 	  KieSession kSession = (KieSession) application.getAttribute("ksession");
 	  FactHandle handle = kSession.insert(rule);
@@ -97,7 +99,8 @@ public class Pricing {
   @DELETE	
   @Produces(MediaType.APPLICATION_JSON)
   public String deleteRule(String ruleId) {
-	  FactStorage storage = new FactStorageMongoDBImpl();
+	  String dbName = (String) application.getAttribute("dbName");
+	  FactStorage storage = new FactStorageMongoDBImpl(dbName);
 	  if(storage.deleteFact(ruleId)) {
 		  KieSession kSession = (KieSession) application.getAttribute("ksession");
 		  kSession.delete(factHandleCache.get(ruleId));
