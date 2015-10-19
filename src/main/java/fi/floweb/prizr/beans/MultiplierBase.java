@@ -17,6 +17,7 @@ public class MultiplierBase implements Serializable {
 	double includesFreight; // amount of freight costs
 	double multiplier; // säännön kerroin
 	double freightMultiplier; // rahtikerroin
+	double baseFreightMultiplier; // jos CC ja yleiskustannus puuttuvat, käytetään hinnan laskennassa
 	
 	public MultiplierBase() {
 	}
@@ -96,5 +97,15 @@ public class MultiplierBase implements Serializable {
 	public void setAppliesToShopCode(String appliesToShopCode) {
 		this.appliesToShopCode = appliesToShopCode;
 	}
+
+	public double getBaseFreightMultiplier() {
+		return baseFreightMultiplier;
+	}
+
+	public void setBaseFreightMultiplier(double baseFreightMultiplier) {
+		this.baseFreightMultiplier = baseFreightMultiplier;
+	}
+	
+	
 	
 }

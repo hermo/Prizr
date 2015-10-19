@@ -55,6 +55,7 @@ public class PricingRulesTest {
 		baseRule.setFreightMultiplier(2);
 		baseRule.setIncludesFreight(2);
 		baseRule.setMultiplier(2);
+		baseRule.setBaseFreightMultiplier(1);
 		
 		PricingRequest testReq = new PricingRequest();
 		testReq.setCommission(2);
@@ -91,6 +92,7 @@ public class PricingRulesTest {
 		baseRule.setFreightMultiplier(2);
 		baseRule.setIncludesFreight(2);
 		baseRule.setMultiplier(2);
+		baseRule.setBaseFreightMultiplier(1);
 		
 		PricingRequest testReq = new PricingRequest();
 		testReq.setCommission(0);
@@ -122,6 +124,7 @@ public class PricingRulesTest {
 		baseRule.setFreightMultiplier(0);
 		baseRule.setIncludesFreight(0);
 		baseRule.setMultiplier(0);
+		baseRule.setBaseFreightMultiplier(0);
 		
 		PricingRequest testReq = new PricingRequest();
 		testReq.setCommission(0);
@@ -153,6 +156,7 @@ public class PricingRulesTest {
 		baseRule.setFreightMultiplier(2);
 		baseRule.setIncludesFreight(2);
 		baseRule.setMultiplier(2);
+		baseRule.setBaseFreightMultiplier(1);
 		
 		MultiplierBase baseRule2 = new MultiplierBase();
 		baseRule2.setAppliesToCategory("UNITTEST");
@@ -163,6 +167,7 @@ public class PricingRulesTest {
 		baseRule2.setFreightMultiplier(2);
 		baseRule2.setIncludesFreight(2);
 		baseRule2.setMultiplier(2);
+		baseRule2.setBaseFreightMultiplier(1);
 		
 		PricingRequest testReq = new PricingRequest();
 		testReq.setCommission(2);

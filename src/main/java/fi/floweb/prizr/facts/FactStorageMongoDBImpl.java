@@ -95,6 +95,7 @@ public class FactStorageMongoDBImpl implements FactStorage {
 		res.put("countryCode", mb.getCountryCode());
 		res.put("includesFreight", mb.getIncludesFreight());
 		res.put("freightMultiplier", mb.getFreightMultiplier());
+		res.put("baseFreightMultiplier", mb.getBaseFreightMultiplier());
 		return res;
 		
 	}
@@ -113,6 +114,7 @@ public class FactStorageMongoDBImpl implements FactStorage {
 		res.setCountryCode((String)db.get("countryCode"));
 		res.setIncludesFreight((Double)db.get("includesFreight"));
 		res.setFreightMultiplier((Double)db.get("freightMultiplier"));
+		res.setBaseFreightMultiplier((Double)db.get("baseFreightMultiplier"));
 		return res;
 		
 	}
