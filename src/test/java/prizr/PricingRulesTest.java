@@ -194,4 +194,151 @@ public class PricingRulesTest {
          assertEquals(50, response.getPrice(), DELTA); 
 	}
 	
+	@Test
+	public void testZeroCommissionEvaluatesToOneInPricingRequest() {
+		MultiplierBase baseRule = new MultiplierBase();
+		baseRule.setAppliesToCategory("UNITTEST");
+		baseRule.setAppliesToLocation("UNITLOCATION");
+		baseRule.setAppliesToShopCode("UNITTESTSHOP");
+		baseRule.setCountryCode("UNITCC");
+		baseRule.setDomestic(true);
+		baseRule.setFreightMultiplier(2);
+		baseRule.setIncludesFreight(2);
+		baseRule.setMultiplier(2);
+		baseRule.setBaseFreightMultiplier(1);
+		
+		PricingRequest testReq = new PricingRequest();
+		testReq.setCommission(0);
+		testReq.setCountryCode("UNITCC");
+		testReq.setItemCategoryCode("UNITTEST");
+		testReq.setItemStandardCost(4);
+		testReq.setItemUnitCC(2);
+		testReq.setLocationCode("UNITLOCATION");
+		testReq.setSalesPrice(10);
+		testReq.setShopCode("UNITTESTSHOP");
+		
+		 kSession.insert(baseRule);
+         kSession.insert(testReq); 
+         PricingResponse pres = new PricingResponse();
+         FactHandle handle = kSession.insert(pres);
+         kSession.fireAllRules();
+         PricingResponse response = (PricingResponse) kSession.getObject(handle);
+         assertTrue(response.isPricingDone());
+         // response should be baseprice + transit where
+         // baseprice = salesprice * commission(0) * multiplier(2) = 40
+         // transit = (standardcost + (includesFreight / itemUnitcc)) * freightMultiplier
+         //i.e. (10 * 0->1 * 2) + (4 + (2 / 2)) * 2 = 20 + 10 = 30
+         assertEquals(30, response.getPrice(), DELTA); 
+	}
+	
+	@Test
+	public void testZeroCCIsPricedWithBaseFreightMultiplier() {
+		MultiplierBase baseRule = new MultiplierBase();
+		baseRule.setAppliesToCategory("UNITTEST");
+		baseRule.setAppliesToLocation("UNITLOCATION");
+		baseRule.setAppliesToShopCode("UNITTESTSHOP");
+		baseRule.setCountryCode("UNITCC");
+		baseRule.setDomestic(true);
+		baseRule.setFreightMultiplier(2);
+		baseRule.setIncludesFreight(2);
+		baseRule.setMultiplier(2);
+		baseRule.setBaseFreightMultiplier(10);
+		
+		PricingRequest testReq = new PricingRequest();
+		testReq.setCommission(2);
+		testReq.setCountryCode("UNITCC");
+		testReq.setItemCategoryCode("UNITTEST");
+		testReq.setItemStandardCost(4);
+		testReq.setItemUnitCC(0);
+		testReq.setLocationCode("UNITLOCATION");
+		testReq.setSalesPrice(10);
+		testReq.setShopCode("UNITTESTSHOP");
+		
+		 kSession.insert(baseRule);
+         kSession.insert(testReq); 
+         PricingResponse pres = new PricingResponse();
+         FactHandle handle = kSession.insert(pres);
+         kSession.fireAllRules();
+         PricingResponse response = (PricingResponse) kSession.getObject(handle);
+         assertTrue(response.isPricingDone());
+         // response should be baseprice + transit where
+         // baseprice = salesprice * commission(2) * multiplier(2) = 40
+         // transit = (salesprice * baseFreightMultiplier)
+         //i.e. (10 * 2 * 2) + (10  * 10) = 40 + 40 = 80
+         assertEquals(140, response.getPrice(), DELTA); 
+	}
+	
+	@Test
+	public void testZeroStandardCostIsPricedWithBaseFreightMultiplier() {
+		MultiplierBase baseRule = new MultiplierBase();
+		baseRule.setAppliesToCategory("UNITTEST");
+		baseRule.setAppliesToLocation("UNITLOCATION");
+		baseRule.setAppliesToShopCode("UNITTESTSHOP");
+		baseRule.setCountryCode("UNITCC");
+		baseRule.setDomestic(true);
+		baseRule.setFreightMultiplier(2);
+		baseRule.setIncludesFreight(2);
+		baseRule.setMultiplier(2);
+		baseRule.setBaseFreightMultiplier(10);
+		
+		PricingRequest testReq = new PricingRequest();
+		testReq.setCommission(2);
+		testReq.setCountryCode("UNITCC");
+		testReq.setItemCategoryCode("UNITTEST");
+		testReq.setItemStandardCost(0);
+		testReq.setItemUnitCC(1);
+		testReq.setLocationCode("UNITLOCATION");
+		testReq.setSalesPrice(10);
+		testReq.setShopCode("UNITTESTSHOP");
+		
+		 kSession.insert(baseRule);
+         kSession.insert(testReq); 
+         PricingResponse pres = new PricingResponse();
+         FactHandle handle = kSession.insert(pres);
+         kSession.fireAllRules();
+         PricingResponse response = (PricingResponse) kSession.getObject(handle);
+         assertTrue(response.isPricingDone());
+         // response should be baseprice + transit where
+         // baseprice = salesprice * commission(2) * multiplier(2) = 40
+         // transit = (salesprice * baseFreightMultiplier)
+         //i.e. (10 * 2 * 2) + (10  * 10) = 40 + 40 = 80
+         assertEquals(140, response.getPrice(), DELTA); 
+	}
+	
+	@Test
+	public void testZeroStandardCostAndCCArePricedWithBaseFreightMultiplier() {
+		MultiplierBase baseRule = new MultiplierBase();
+		baseRule.setAppliesToCategory("UNITTEST");
+		baseRule.setAppliesToLocation("UNITLOCATION");
+		baseRule.setAppliesToShopCode("UNITTESTSHOP");
+		baseRule.setCountryCode("UNITCC");
+		baseRule.setDomestic(true);
+		baseRule.setFreightMultiplier(2);
+		baseRule.setIncludesFreight(2);
+		baseRule.setMultiplier(2);
+		baseRule.setBaseFreightMultiplier(10);
+		
+		PricingRequest testReq = new PricingRequest();
+		testReq.setCommission(2);
+		testReq.setCountryCode("UNITCC");
+		testReq.setItemCategoryCode("UNITTEST");
+		testReq.setItemStandardCost(0);
+		testReq.setItemUnitCC(0);
+		testReq.setLocationCode("UNITLOCATION");
+		testReq.setSalesPrice(10);
+		testReq.setShopCode("UNITTESTSHOP");
+		
+		 kSession.insert(baseRule);
+         kSession.insert(testReq); 
+         PricingResponse pres = new PricingResponse();
+         FactHandle handle = kSession.insert(pres);
+         kSession.fireAllRules();
+         PricingResponse response = (PricingResponse) kSession.getObject(handle);
+         assertTrue(response.isPricingDone());
+         // response should be baseprice + transit where
+         // baseprice = salesprice * commission(2) * multiplier(2) = 40
+         // transit = (salesprice * baseFreightMultiplier)
+         //i.e. (10 * 2 * 2) + (10  * 10) = 40 + 40 = 80
+         assertEquals(140, response.getPrice(), DELTA); 
+	}
 }
