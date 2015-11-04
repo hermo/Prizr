@@ -7,10 +7,10 @@ rule "Category, country and location code determine which pricemultiplier should
 	when 
 		$preq : PricingRequest()
 		$pres : PricingResponse(pricingDone == false)
-		$multiplier : MultiplierBase(appliesToLocation == $preq.locationCode && 
+		$multiplier : MultiplierBase((appliesToLocation == $preq.locationCode || appliesToLocation == "Kaikki") && 
 									countryCode == $preq.countryCode &&
-									appliesToCategory == $preq.itemCategoryCode &&
-									appliesToShopCode == $preq.shopCode)
+									(appliesToCategory == $preq.itemCategoryCode || appliesToCategory == "Kaikki") &&
+									(appliesToShopCode == $preq.shopCode || appliesToShopCode == "Kaikki"))
 	then
 		double newPrice = $preq.getSalesPrice()*$preq.getCommission()*$multiplier.getMultiplier();
 		double transit = $preq.getItemStandardCost()+($multiplier.getIncludesFreight() / $preq.getItemUnitCC());
@@ -29,7 +29,7 @@ rule "If there are no CC and standard cost in request, calculate freight costs b
 		$multiplier : MultiplierBase(appliesToLocation == $preq.locationCode && 
 									countryCode == $preq.countryCode &&
 									appliesToCategory == $preq.itemCategoryCode &&
-									appliesToShopCode == $preq.shopCode)
+									(appliesToShopCode == $preq.shopCode || appliesToShopCode == "Kaikki"))
 	then
 		double newPrice = $preq.getSalesPrice()*$preq.getCommission()*$multiplier.getMultiplier();
 		double transit = $preq.getSalesPrice()*$multiplier.getBaseFreightMultiplier();

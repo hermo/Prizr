@@ -14,6 +14,12 @@ import fi.floweb.prizr.beans.MultiplierBase;
 import fi.floweb.prizr.beans.PricingRequest;
 import fi.floweb.prizr.beans.PricingResponse;
 
+/**
+ * These tests testo the matching / rules functionality logically
+ * @author juha
+ */
+
+
 public class PricingRulesTest {
 
 	private static final double DELTA = 1e-15;
