@@ -106,6 +106,29 @@ public class MultiplierBase implements Serializable {
 		this.baseFreightMultiplier = baseFreightMultiplier;
 	}
 	
+	/**
+	 * Field-by-field comparison of MultiplierBase objects, ID field is ignored as that is
+	 * database key
+	 * @param other
+	 * @return
+	 */
 	
+	public boolean equals(MultiplierBase other) {
+		// very nasty, compares field-by-field with null-safe string comparison
+		if((other.isDomestic == isDomestic) &&
+		(other.appliesToCategory == null ? appliesToCategory == null : other.appliesToCategory.equals(appliesToCategory)) &&
+		(other.appliesToLocation == null ? appliesToLocation == null : other.appliesToLocation.equals(appliesToLocation)) &&
+		(other.appliesToShopCode == null ? appliesToShopCode == null : other.appliesToShopCode.equals(appliesToShopCode)) &&
+		(other.baseFreightMultiplier == baseFreightMultiplier) &&
+		(other.countryCode == null ? countryCode == null : other.countryCode.equals(countryCode)) &&
+		(other.freightMultiplier == freightMultiplier) &&
+		(other.includesFreight == includesFreight) && 
+		(other.multiplier == multiplier) && 
+		(other.multiplierBaseDescription == null ? multiplierBaseDescription == null : other.multiplierBaseDescription.equals(multiplierBaseDescription)) &&
+		(other.multiplierBaseName == null ? multiplierBaseName == null : other.multiplierBaseName.equals(multiplierBaseName))) {
+			return true;
+		}
+		return false;
+	}
 	
 }

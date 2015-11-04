@@ -9,5 +9,6 @@ public interface FactStorage {
 	ArrayList<MultiplierBase> getFacts();
 	boolean storeFact(MultiplierBase fact);
 	boolean deleteFact(String baseName);
+	boolean clearFacts();
 	
 }

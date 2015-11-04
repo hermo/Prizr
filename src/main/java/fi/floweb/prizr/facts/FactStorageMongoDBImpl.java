@@ -13,6 +13,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoException;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 
@@ -83,6 +84,19 @@ public class FactStorageMongoDBImpl implements FactStorage {
 		return true;
 	}
 	
+	@Override
+	public boolean clearFacts() {
+		init();
+		try {
+			coll.drop();
+		} catch (MongoException e) {
+			System.out.println("Failed to drop collection "+coll.getName()+", exception: "+e.getMessage());
+			return false;
+		}
+		return true;
+	}
+	
+	
 	private DBObject multiplierBaseToDBObject(MultiplierBase mb) {
 		DBObject res = new BasicDBObject();
 		res.put("appliesToCategory", mb.getAppliesToCategory());
@@ -138,5 +152,6 @@ public class FactStorageMongoDBImpl implements FactStorage {
 		} 
 		return false;
 	}
+
 	
 }
