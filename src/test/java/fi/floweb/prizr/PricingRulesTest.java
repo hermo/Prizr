@@ -1,4 +1,4 @@
-package prizr;
+package fi.floweb.prizr;
 
 import static org.junit.Assert.*;
 

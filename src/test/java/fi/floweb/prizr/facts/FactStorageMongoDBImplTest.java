@@ -1,10 +1,14 @@
-package prizr;
+package fi.floweb.prizr.facts;
 
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+import org.bson.types.ObjectId;
 import org.junit.Test;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 
 import fi.floweb.prizr.beans.MultiplierBase;
 import fi.floweb.prizr.facts.FactStorageMongoDBImpl;
@@ -68,6 +72,41 @@ public class FactStorageMongoDBImplTest {
 		MultiplierBase readFact = dao.getFacts().get(0);
 		assertTrue(readFact.equals(fact));
 		dao.clearFacts();
+	}
+	
+	@Test
+	public void testIncompleteDBObjectWorksInBeanConversion() {
+		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl("testcollection");
+		DBObject db = new BasicDBObject();
+		db.put("_id", new ObjectId("563887c4d4c6a5481e2eccf3"));
+		db.put("appliesToCategory", "testcategory");
+		db.put("multiplier", new Double(1.24));
+		db.put("isDomestic", true);
+		db.put("countryCode", "testcountrycode");
+		db.put("baseFreightMultiplier", new Double(5.67));
+		MultiplierBase incomplete = dao.DBObjectToMultiplierBase(db);
+		assertNotNull(incomplete);
+		assertTrue(incomplete.getAppliesToCategory().equals("testcategory"));
+		assertEquals(incomplete.getMultiplier(), new Double(1.24).doubleValue(),2);
+		assertEquals(incomplete.isDomestic(), true);
+		assertTrue(incomplete.getCountryCode().equals("testcountrycode"));
+		assertEquals(incomplete.getBaseFreightMultiplier(), new Double(5.67).doubleValue(), 2);
+		assertTrue(incomplete.getAppliesToLocation().equals(""));
+		assertTrue(incomplete.getAppliesToShopCode().equals(""));
+		assertEquals(incomplete.getIncludesFreight(), new Double(0).doubleValue(), 2);
+	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void objectWithoutIDThrowsIllegalState() {
+		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl("testcollection");
+		DBObject db = new BasicDBObject();
+		db.put("appliesToCategory", "testcategory");
+		db.put("multiplier", new Double(1.24));
+		db.put("isDomestic", true);
+		db.put("countryCode", "testcountrycode");
+		db.put("baseFreightMultiplier", new Double(5.67));
+		MultiplierBase incomplete = dao.DBObjectToMultiplierBase(db);
+		assertNull(incomplete);
 	}
 
 }

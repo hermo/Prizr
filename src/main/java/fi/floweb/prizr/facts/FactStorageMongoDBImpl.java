@@ -97,7 +97,7 @@ public class FactStorageMongoDBImpl implements FactStorage {
 	}
 	
 	
-	private DBObject multiplierBaseToDBObject(MultiplierBase mb) {
+	protected DBObject multiplierBaseToDBObject(MultiplierBase mb) {
 		DBObject res = new BasicDBObject();
 		res.put("appliesToCategory", mb.getAppliesToCategory());
 		res.put("appliesToLocation", mb.getAppliesToLocation());
@@ -114,8 +114,11 @@ public class FactStorageMongoDBImpl implements FactStorage {
 		
 	}
 
-	private MultiplierBase DBObjectToMultiplierBase(DBObject db) {
+	protected MultiplierBase DBObjectToMultiplierBase(DBObject db) {
 		MultiplierBase res = new MultiplierBase();
+		if(!db.containsField("_id")) {
+			throw new IllegalStateException("Tried to deserialize bean without unique id from DB!");
+		}
 		ObjectId uniqueId = (ObjectId)db.get("_id");
 		res.setId(uniqueId.toString());
 		res.setAppliesToCategory(nullSafeGetString(db,"appliesToCategory"));
