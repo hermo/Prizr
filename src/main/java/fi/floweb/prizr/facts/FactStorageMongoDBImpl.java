@@ -104,19 +104,39 @@ public class FactStorageMongoDBImpl implements FactStorage {
 		MultiplierBase res = new MultiplierBase();
 		ObjectId uniqueId = (ObjectId)db.get("_id");
 		res.setId(uniqueId.toString());
-		res.setAppliesToCategory((String)db.get("appliesToCategory"));
-		res.setAppliesToLocation((String)db.get("appliesToLocation"));
-		res.setMultiplier((Double)db.get("multiplier"));
-		res.setMultiplierBaseDescription((String)db.get("multiplierBaseDescription"));
-		res.setMultiplierBaseName((String)db.get("multiplierBaseName"));
-		res.setAppliesToShopCode((String)db.get("appliesToShopCode"));
-		res.setDomestic((Boolean)db.get("isDomestic"));
-		res.setCountryCode((String)db.get("countryCode"));
-		res.setIncludesFreight((Double)db.get("includesFreight"));
-		res.setFreightMultiplier((Double)db.get("freightMultiplier"));
-		res.setBaseFreightMultiplier((Double)db.get("baseFreightMultiplier"));
+		res.setAppliesToCategory(nullSafeGetString(db,"appliesToCategory"));
+		res.setAppliesToLocation(nullSafeGetString(db,"appliesToLocation"));
+		res.setMultiplier(nullSafeGetDouble(db,"multiplier"));
+		res.setMultiplierBaseDescription(nullSafeGetString(db,"multiplierBaseDescription"));
+		res.setMultiplierBaseName(nullSafeGetString(db,"multiplierBaseName"));
+		res.setAppliesToShopCode(nullSafeGetString(db,"appliesToShopCode"));
+		res.setDomestic(nullSafeGetBoolean(db,"isDomestic"));
+		res.setCountryCode(nullSafeGetString(db,"countryCode"));
+		res.setIncludesFreight(nullSafeGetDouble(db,"includesFreight"));
+		res.setFreightMultiplier(nullSafeGetDouble(db,"freightMultiplier"));
+		res.setBaseFreightMultiplier(nullSafeGetDouble(db,"baseFreightMultiplier"));
 		return res;
-		
+	}
+	
+	private String nullSafeGetString(DBObject db, String fieldName) {
+		if(db.containsField(fieldName)) {
+			return (String)db.get(fieldName);
+		} 
+		return "";
+	}
+	
+	private Double nullSafeGetDouble(DBObject db, String fieldName) {
+		if(db.containsField(fieldName)) {
+			return (Double)db.get(fieldName);
+		} 
+		return new Double(0);
+	}
+	
+	private Boolean nullSafeGetBoolean(DBObject db, String fieldName) {
+		if(db.containsField(fieldName)) {
+			return (Boolean)db.get(fieldName);
+		} 
+		return false;
 	}
 	
 }
