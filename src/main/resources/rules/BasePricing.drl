@@ -8,7 +8,7 @@ rule "Category, country and location code determine which pricemultiplier should
 		$preq : PricingRequest()
 		$pres : PricingResponse(pricingDone == false)
 		$multiplier : MultiplierBase((appliesToLocation == $preq.locationCode || appliesToLocation == "Kaikki") && 
-									countryCode == $preq.countryCode &&
+									(countryCode == $preq.countryCode || (countryCode == "-" && $preq.countryCode != "FI")) &&
 									(appliesToCategory == $preq.itemCategoryCode || appliesToCategory == "Kaikki") &&
 									(appliesToShopCode == $preq.shopCode || appliesToShopCode == "Kaikki"))
 	then
@@ -27,7 +27,7 @@ rule "If there are no CC and standard cost in request, calculate freight costs b
 		$preq : PricingRequest(itemStandardCost == 0 || itemUnitCC == 0);
 		$pres : PricingResponse(pricingDone == false)
 		$multiplier : MultiplierBase(appliesToLocation == $preq.locationCode && 
-									countryCode == $preq.countryCode &&
+									(countryCode == $preq.countryCode || (countryCode == "-" && $preq.countryCode != "FI")) &&
 									appliesToCategory == $preq.itemCategoryCode &&
 									(appliesToShopCode == $preq.shopCode || appliesToShopCode == "Kaikki"))
 	then
