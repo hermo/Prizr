@@ -347,4 +347,106 @@ public class PricingRulesTest {
          //i.e. (10 * 2 * 2) + (10  * 10) = 40 + 40 = 80
          assertEquals(140, response.getPrice(), DELTA); 
 	}
+	
+	@Test
+	public void testForeignCountryCodeMatchesWithAllForeignCCsSelected() {
+		MultiplierBase baseRule = new MultiplierBase();
+		baseRule.setAppliesToCategory("UNITTEST");
+		baseRule.setAppliesToLocation("UNITLOCATION");
+		baseRule.setAppliesToShopCode("UNITTESTSHOP");
+		baseRule.setCountryCode("-");
+		baseRule.setDomestic(false);
+		baseRule.setFreightMultiplier(2);
+		baseRule.setIncludesFreight(2);
+		baseRule.setMultiplier(2);
+		baseRule.setBaseFreightMultiplier(10);
+		
+		PricingRequest testReq = new PricingRequest();
+		testReq.setCommission(2);
+		testReq.setCountryCode("NL");
+		testReq.setItemCategoryCode("UNITTEST");
+		testReq.setItemStandardCost(0);
+		testReq.setItemUnitCC(0);
+		testReq.setLocationCode("UNITLOCATION");
+		testReq.setSalesPrice(10);
+		testReq.setShopCode("UNITTESTSHOP");
+				
+		 kSession.insert(baseRule);
+	     kSession.insert(testReq); 
+	     PricingResponse pres = new PricingResponse();
+	     FactHandle handle = kSession.insert(pres);
+	     kSession.fireAllRules();
+	     PricingResponse response = (PricingResponse) kSession.getObject(handle);
+	     assertTrue(response.isPricingDone());
+	     // response should be baseprice + transit where
+	     // baseprice = salesprice * commission(2) * multiplier(2) = 40
+	     // transit = (salesprice * baseFreightMultiplier)
+	     //i.e. (10 * 2 * 2) + (10  * 10) = 40 + 40 = 80
+	     assertEquals(140, response.getPrice(), DELTA); 
+	}
+	
+	@Test
+	public void testDomesticCountryCodeDoesNotMatchWithAllForeignCCsSelected() {
+		MultiplierBase baseRule = new MultiplierBase();
+		baseRule.setAppliesToCategory("UNITTEST");
+		baseRule.setAppliesToLocation("UNITLOCATION");
+		baseRule.setAppliesToShopCode("UNITTESTSHOP");
+		baseRule.setCountryCode("-");
+		baseRule.setDomestic(false);
+		baseRule.setFreightMultiplier(2);
+		baseRule.setIncludesFreight(2);
+		baseRule.setMultiplier(2);
+		baseRule.setBaseFreightMultiplier(10);
+		
+		PricingRequest testReq = new PricingRequest();
+		testReq.setCommission(2);
+		testReq.setCountryCode("FI");
+		testReq.setItemCategoryCode("UNITTEST");
+		testReq.setItemStandardCost(0);
+		testReq.setItemUnitCC(0);
+		testReq.setLocationCode("UNITLOCATION");
+		testReq.setSalesPrice(10);
+		testReq.setShopCode("UNITTESTSHOP");
+				
+		 kSession.insert(baseRule);
+	     kSession.insert(testReq); 
+	     PricingResponse pres = new PricingResponse();
+	     FactHandle handle = kSession.insert(pres);
+	     kSession.fireAllRules();
+	     PricingResponse response = (PricingResponse) kSession.getObject(handle);
+	     assertFalse(response.isPricingDone()); 
+	}
+	
+	@Test
+	public void testDomesticCountryCodeDoesNotMatchWithAllForeignCCsSelectedNotTransitCost() {
+		MultiplierBase baseRule = new MultiplierBase();
+		baseRule.setAppliesToCategory("UNITTEST");
+		baseRule.setAppliesToLocation("UNITLOCATION");
+		baseRule.setAppliesToShopCode("UNITTESTSHOP");
+		baseRule.setCountryCode("-");
+		baseRule.setDomestic(false);
+		baseRule.setFreightMultiplier(2);
+		baseRule.setIncludesFreight(2);
+		baseRule.setMultiplier(2);
+		baseRule.setBaseFreightMultiplier(10);
+		
+		PricingRequest testReq = new PricingRequest();
+		testReq.setCommission(2);
+		testReq.setCountryCode("NL");
+		testReq.setItemCategoryCode("UNITTEST");
+		testReq.setItemStandardCost(2);
+		testReq.setItemUnitCC(2);
+		testReq.setLocationCode("UNITLOCATION");
+		testReq.setSalesPrice(10);
+		testReq.setShopCode("UNITTESTSHOP");
+				
+		 kSession.insert(baseRule);
+	     kSession.insert(testReq); 
+	     PricingResponse pres = new PricingResponse();
+	     FactHandle handle = kSession.insert(pres);
+	     kSession.fireAllRules();
+	     PricingResponse response = (PricingResponse) kSession.getObject(handle);
+	     assertTrue(response.isPricingDone()); 
+	     assertEquals(46, response.getPrice(), DELTA);
+	}
 }
