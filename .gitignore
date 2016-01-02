@@ -4,3 +4,5 @@
 .settings/
 *~
 deploy.sh
+.idea/
+prizr.iml
