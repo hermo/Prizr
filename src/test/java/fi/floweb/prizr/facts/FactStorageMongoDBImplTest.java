@@ -108,5 +108,64 @@ public class FactStorageMongoDBImplTest {
 		MultiplierBase incomplete = dao.DBObjectToMultiplierBase(db);
 		assertNull(incomplete);
 	}
+	
+	@Test
+	public void testObjectUpdateWithJustInsertedObject() {
+		MultiplierBase fact = new MultiplierBase();
+		fact.setAppliesToCategory("testcategory");
+		fact.setAppliesToLocation("testlocation");
+		fact.setAppliesToShopCode("testshopcode");
+		fact.setBaseFreightMultiplier(1.23);
+		fact.setCountryCode("testcountrycode");
+		fact.setDomestic(true);
+		fact.setFreightMultiplier(4.56);
+		fact.setIncludesFreight(7.89);
+		fact.setMultiplier(9.99);
+		fact.setMultiplierBaseDescription("testmultiplierbasedescription");
+		fact.setMultiplierBaseName("testmultiplierbasename");
+		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl("testcollection");
+		dao.clearFacts();
+		dao.storeFact(fact);
+		ArrayList<MultiplierBase> stored = dao.getFacts();
+		String updateId = stored.get(0).getId();
+		MultiplierBase updateFact = stored.get(0);
+		updateFact.setAppliesToCategory("updatetestcategory");
+		updateFact.setAppliesToLocation("updatetestlocation");
+		updateFact.setAppliesToShopCode("updatetestshopcode");
+		updateFact.setBaseFreightMultiplier(11.23);
+		updateFact.setCountryCode("updatetestcountrycode");
+		updateFact.setDomestic(false);
+		updateFact.setFreightMultiplier(14.56);
+		updateFact.setIncludesFreight(17.89);
+		updateFact.setMultiplier(19.99);
+		updateFact.setMultiplierBaseDescription("updatetestmultiplierbasedescription");
+		updateFact.setMultiplierBaseName("updatetestmultiplierbasename");
+		dao.updateFact(updateId, updateFact);
+		ArrayList<MultiplierBase> storedAfterUpdate = dao.getFacts();
+		assertEquals(1, storedAfterUpdate.size());
+		MultiplierBase readFact = storedAfterUpdate.get(0);
+		assertEquals(updateFact.getAppliesToCategory(), readFact.getAppliesToCategory());
+		assertEquals(updateFact.getAppliesToLocation(), readFact.getAppliesToLocation());
+		assertEquals(updateFact.getAppliesToShopCode(), readFact.getAppliesToShopCode());
+		assertEquals(updateFact.getBaseFreightMultiplier(), readFact.getBaseFreightMultiplier(),2);
+		assertEquals(updateFact.getCountryCode(), readFact.getCountryCode());
+		assertEquals(updateFact.isDomestic(), readFact.isDomestic());
+		assertEquals(updateFact.getFreightMultiplier(), readFact.getFreightMultiplier(),2);
+		assertEquals(updateFact.getIncludesFreight(), readFact.getIncludesFreight(),2);
+		assertEquals(updateFact.getMultiplier(), readFact.getMultiplier(),2);
+		assertEquals(updateFact.getMultiplierBaseDescription(), readFact.getMultiplierBaseDescription());
+		assertEquals(updateFact.getMultiplierBaseName(), readFact.getMultiplierBaseName());
+	}
+	
+	@Test
+	public void testObjectUpdateFailsWithBrokenObjectId() {
+		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl("testcollection");
+		assertFalse(dao.updateFact("BrokenObjectId", new MultiplierBase()));
+	}
 
+	@Test
+	public void testObjectUpdateFailsWithNonExistentObjectId() {
+		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl("testcollection");
+		assertFalse(dao.updateFact("5690e272fffff9875ac08df2", new MultiplierBase()));
+	}	
 }
