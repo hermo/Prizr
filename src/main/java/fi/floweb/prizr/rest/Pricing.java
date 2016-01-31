@@ -5,7 +5,9 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
@@ -107,6 +109,33 @@ public class Pricing {
 	  FactHandle handle = kSession.insert(rule);
 	  factHandleCache.put(rule.getId(), handle);
 	  return rule;
+  }
+  
+  @Path("/batch")
+  @POST
+  @Produces(MediaType.APPLICATION_JSON)
+  public Map<String, Integer> batchUpdateAllRules(List<MultiplierBase> rules) {
+	  System.out.println("Called:");
+	  HashMap<String, Integer> res = new HashMap<String, Integer>();
+	  String dbName = (String) application.getAttribute("dbName");
+	  FactStorage storage = new FactStorageMongoDBImpl(dbName);
+	  KieSession kSession = (KieSession) application.getAttribute("ksession");	
+	  int updated = 0;
+	  if(rules.isEmpty()) {
+		  res.put("updated", updated);
+		  return res;
+	  }
+	  storage.clearFacts();
+	  kSession.dispose();
+	  Iterator<MultiplierBase> iter = rules.iterator();
+	  while(iter.hasNext()) {
+		  MultiplierBase next = iter.next();
+		  storage.storeFact(next);
+		  FactHandle handle = kSession.insert(next);
+		  factHandleCache.put(next.getId(), handle);
+	  }
+	  res.put("updated", updated);
+	  return res;
   }
   
   @Path("/rules")

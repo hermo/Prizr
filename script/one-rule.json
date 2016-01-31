@@ -1,0 +1,12 @@
+{"id" : "id1",
+"multiplierBaseName" : "Name1",
+"multiplierBaseDescription" : "Description1",
+"appliesToCategory" : "Cat1",
+"appliesToLocation" : "Loc1",
+"appliesToShopCode" : "Shop1",
+"isDomestic" : true,
+"countryCode" : "FI",
+"includesFreight" : "1.0",
+"multiplier" : "1.0",
+"freightMultiplier" : "1.0",
+"baseFreightMultiplier": "1.0"}

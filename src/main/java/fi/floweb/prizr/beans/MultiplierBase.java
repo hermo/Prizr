@@ -1,7 +1,9 @@
 package fi.floweb.prizr.beans;
 
 import java.io.Serializable;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 public class MultiplierBase implements Serializable {
 
 	private static final long serialVersionUID = -3304031619236159475L;
