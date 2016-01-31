@@ -1,4 +1,4 @@
-{"data": [
+[
    {"id" : "id1",
 	"multiplierBaseName" : "Name1",
    "multiplierBaseDescription" : "Description1",
@@ -37,5 +37,4 @@
    "multiplier" : "3.0",
    "freightMultiplier" : "3.0",
    "baseFreightMultiplier": "3.0"}
-   ]
-}
+]

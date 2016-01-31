@@ -2,15 +2,13 @@ package fi.floweb.prizr.rest;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -22,8 +20,6 @@ import javax.ws.rs.core.MediaType;
 
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
-
-import com.owlike.genson.Genson;
 
 import fi.floweb.prizr.beans.MultiplierBase;
 import fi.floweb.prizr.beans.PricingRequest;
@@ -114,27 +110,33 @@ public class Pricing {
   @Path("/batch")
   @POST
   @Produces(MediaType.APPLICATION_JSON)
-  public Map<String, Integer> batchUpdateAllRules(List<MultiplierBase> rules) {
-	  System.out.println("Called:");
+  public Map<String, Integer> batchUpdateAllRules(MultiplierBase[] rules) {
 	  HashMap<String, Integer> res = new HashMap<String, Integer>();
 	  String dbName = (String) application.getAttribute("dbName");
 	  FactStorage storage = new FactStorageMongoDBImpl(dbName);
 	  KieSession kSession = (KieSession) application.getAttribute("ksession");	
 	  int updated = 0;
-	  if(rules.isEmpty()) {
+	  int revoked = 0;
+	  if(rules == null || rules.length == 0) {
 		  res.put("updated", updated);
+		  res.put("revoked", revoked);
+		  res.put("total", factHandleCache.size());
 		  return res;
 	  }
+	  revoked = factHandleCache.size();
+	  factHandleCache = new HashMap<String,FactHandle>();
 	  storage.clearFacts();
-	  kSession.dispose();
-	  Iterator<MultiplierBase> iter = rules.iterator();
+	  Iterator<MultiplierBase> iter = Arrays.asList(rules).iterator();
 	  while(iter.hasNext()) {
 		  MultiplierBase next = iter.next();
 		  storage.storeFact(next);
 		  FactHandle handle = kSession.insert(next);
 		  factHandleCache.put(next.getId(), handle);
+		  updated++;
 	  }
 	  res.put("updated", updated);
+	  res.put("revoked", revoked);
+	  res.put("total", factHandleCache.size());
 	  return res;
   }
   
