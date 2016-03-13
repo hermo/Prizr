@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -20,6 +21,8 @@ import javax.ws.rs.core.MediaType;
 
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
+
+import com.owlike.genson.Genson;
 
 import fi.floweb.prizr.beans.MultiplierBase;
 import fi.floweb.prizr.beans.PricingRequest;
@@ -110,7 +113,12 @@ public class Pricing {
   @Path("/batch")
   @POST
   @Produces(MediaType.APPLICATION_JSON)
+  @Consumes(MediaType.APPLICATION_JSON)
   public Map<String, Integer> batchUpdateAllRules(MultiplierBase[] rules) {
+	  if(rules == null) {
+		  System.out.println("Rules is null...");
+		  return null;
+	  }
 	  HashMap<String, Integer> res = new HashMap<String, Integer>();
 	  String dbName = (String) application.getAttribute("dbName");
 	  FactStorage storage = new FactStorageMongoDBImpl(dbName);
