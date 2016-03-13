@@ -1,6 +1,7 @@
 package fi.floweb.prizr.beans;
 
 import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement

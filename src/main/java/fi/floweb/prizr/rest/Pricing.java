@@ -22,8 +22,6 @@ import javax.ws.rs.core.MediaType;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 
-import com.owlike.genson.Genson;
-
 import fi.floweb.prizr.beans.MultiplierBase;
 import fi.floweb.prizr.beans.PricingRequest;
 import fi.floweb.prizr.beans.PricingResponse;

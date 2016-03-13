@@ -2,8 +2,6 @@ package fi.floweb.prizr.facts;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import org.bson.types.ObjectId;
 
