@@ -7,7 +7,7 @@ mvn clean package assembly:single -Denforcer.skip=true
 
 Run with:
 
-java -jar target/Prizr-webapp-jar-with-dependencies.jar [dbname] [port]
+java -jar target/Prizr-webapp-jar-with-dependencies.jar [dbhost] [dbname] [port]
 
 Configuring supervisord:
 

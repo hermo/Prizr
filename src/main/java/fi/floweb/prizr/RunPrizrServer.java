@@ -19,13 +19,15 @@ public class RunPrizrServer {
 	public static KieSession kSession = null;
 
 	public static void main(String[] args) throws Exception {
+	    String dbHost = null;
 		String dbName = null;
 		Integer port = null;
 		try {
-			dbName = args[0];
-			port = Integer.parseInt(args[1]);
+		    dbHost = args[0];
+			dbName = args[1];
+			port = Integer.parseInt(args[2]);
 		} catch (ArrayIndexOutOfBoundsException e) {
-			System.out.println("You need to specify two input parameters: [dbname] [port]");
+			System.out.println("You need to specify three input parameters: [dbhost] [dbname] [port]");
 			System.exit(1);
 		} catch (NumberFormatException e) {
 			System.out.println("Your port designation needs to be an integer, like 8080.");
@@ -34,7 +36,7 @@ public class RunPrizrServer {
 		System.out.println("Initializing Jersey and Jetty server...");
 		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
-        context.addEventListener(new DroolsServletContextClass(dbName));
+        context.addEventListener(new DroolsServletContextClass(dbHost, dbName));
         FilterHolder holder = new FilterHolder();
         holder.setFilter(new CORSFilter());
         context.addFilter(holder, "/*", EnumSet.of(DispatcherType.REQUEST));

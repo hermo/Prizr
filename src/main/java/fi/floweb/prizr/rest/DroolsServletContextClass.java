@@ -19,12 +19,14 @@ public class DroolsServletContextClass implements ServletContextListener {
 
 	public static KieSession kSession;
 	public static FactStorage factStorage;
+	private static String dbHost;
 	private static String dbName;
-	
+
 	@Context
 	private static ServletContext application;
 	
-	public DroolsServletContextClass(String dbName) {
+	public DroolsServletContextClass(String dbHost, String dbName) {
+	    this.dbHost = dbHost;
 		this.dbName = dbName;
 	}
 
@@ -38,14 +40,14 @@ public class DroolsServletContextClass implements ServletContextListener {
 		factStorageInit();
 		droolsInit();
 		sce.getServletContext().setAttribute("ksession", kSession);
+		sce.getServletContext().setAttribute("dbHost", dbHost);
 		sce.getServletContext().setAttribute("dbName", dbName);
 	}
 	
 	private void factStorageInit() {
 		System.out.println("Init fact storage...");
-		factStorage = new FactStorageMongoDBImpl(dbName);
+		factStorage = new FactStorageMongoDBImpl(dbHost, dbName);
 		System.out.println("OK.");
-
 	}
 	
 	public static KieSession getKieSession() {
@@ -69,7 +71,7 @@ public class DroolsServletContextClass implements ServletContextListener {
     	DroolsServletContextClass.kSession = kContainer.newKieSession("ksession-rules");
 
     	// load rules from DB and insert to store
-    	FactStorage storage = new FactStorageMongoDBImpl(dbName);
+    	FactStorage storage = new FactStorageMongoDBImpl(dbHost, dbName);
   	  	ArrayList<MultiplierBase> rules = storage.getFacts();
     	for(MultiplierBase rule : rules) {
     		System.out.println("Insert persisted rule: "+rule.getMultiplierBaseName());

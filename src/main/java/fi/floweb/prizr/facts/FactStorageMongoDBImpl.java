@@ -25,12 +25,15 @@ public class FactStorageMongoDBImpl implements FactStorage {
 	private static MongoClient mongoClient = null;
 	private static DB db = null;
 	private static DBCollection coll = null;
+	private static String currentDbHost = null;
 	private static String currentDbName = null;
-	
+
+
+
 	private static void init() {
 		if (mongoClient == null) {
 			try {
-				mongoClient = new MongoClient( "localhost:27017" );
+				mongoClient = new MongoClient( currentDbHost + ":27017" );
 			} catch (UnknownHostException e) {
 				System.exit(1);
 			}
@@ -43,7 +46,8 @@ public class FactStorageMongoDBImpl implements FactStorage {
 		}
 	}
 	
-	public FactStorageMongoDBImpl(String dbName) {
+	public FactStorageMongoDBImpl(String dbHost, String dbName) {
+	    currentDbHost = dbHost;
 		currentDbName = dbName;
 	}
 	

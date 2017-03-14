@@ -69,14 +69,18 @@ public class Pricing {
 	      return response;
 	  }
   }
+
+  private FactStorage getStorage() {
+	  String dbHost = (String) application.getAttribute("dbHost");
+	  String dbName = (String) application.getAttribute("dbName");
+	  return new FactStorageMongoDBImpl(dbHost, dbName);
+  }
   
   @Path("/rules")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public MultiplierBase[] getRules() {
-	  String dbName = (String) application.getAttribute("dbName");
-	  FactStorage storage = new FactStorageMongoDBImpl(dbName);
-	  ArrayList<MultiplierBase> rules = storage.getFacts();
+	  ArrayList<MultiplierBase> rules = this.getStorage().getFacts();
 	  MultiplierBase[] res = new MultiplierBase[rules.size()]; 
 	  rules.toArray(res);
 	  return res;
@@ -86,8 +90,7 @@ public class Pricing {
   @POST
   @Produces(MediaType.APPLICATION_JSON)
   public MultiplierBase setRule(MultiplierBase rule) {
-	  String dbName = (String) application.getAttribute("dbName");
-	  FactStorage storage = new FactStorageMongoDBImpl(dbName);
+	  FactStorage storage = this.getStorage();
 	  storage.storeFact(rule);
 	  KieSession kSession = (KieSession) application.getAttribute("ksession");
 	  FactHandle handle = kSession.insert(rule);
@@ -99,8 +102,7 @@ public class Pricing {
   @POST
   @Produces(MediaType.APPLICATION_JSON)
   public MultiplierBase updateRule(@PathParam("ruleId") String ruleId, MultiplierBase rule) {
-	  String dbName = (String) application.getAttribute("dbName");
-	  FactStorage storage = new FactStorageMongoDBImpl(dbName);
+	  FactStorage storage = this.getStorage();
 	  storage.updateFact(ruleId,rule);
 	  KieSession kSession = (KieSession) application.getAttribute("ksession");
 	  FactHandle handle = kSession.insert(rule);
@@ -118,8 +120,7 @@ public class Pricing {
 		  return null;
 	  }
 	  HashMap<String, Integer> res = new HashMap<String, Integer>();
-	  String dbName = (String) application.getAttribute("dbName");
-	  FactStorage storage = new FactStorageMongoDBImpl(dbName);
+	  FactStorage storage = this.getStorage();
 	  KieSession kSession = (KieSession) application.getAttribute("ksession");	
 	  int updated = 0;
 	  int revoked = 0;
@@ -150,8 +151,7 @@ public class Pricing {
   @DELETE	
   @Produces(MediaType.APPLICATION_JSON)
   public String deleteRule(String ruleId) {
-	  String dbName = (String) application.getAttribute("dbName");
-	  FactStorage storage = new FactStorageMongoDBImpl(dbName);
+	  FactStorage storage = this.getStorage();
 	  if(storage.deleteFact(ruleId)) {
 		  KieSession kSession = (KieSession) application.getAttribute("ksession");
 		  kSession.delete(factHandleCache.get(ruleId));
