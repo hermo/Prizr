@@ -16,7 +16,7 @@ public class FactStorageMongoDBImplTest {
 
 	@Test
 	public void testInstantiates() {
-		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl("localhost", "testcollection");
+		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl("mongo", "testcollection");
 		assertNotNull(dao);
 		dao.clearFacts();
 		assertEquals(0,dao.getFacts().size());
@@ -24,7 +24,7 @@ public class FactStorageMongoDBImplTest {
 	
 	@Test
 	public void testClearFactsEmptiesFacts() {
-		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl( "localhost", "testcollection");
+		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl( "mongo", "testcollection");
 		assertNotNull(dao);
 		MultiplierBase newFact = new MultiplierBase();
 		dao.storeFact(newFact);
@@ -34,7 +34,7 @@ public class FactStorageMongoDBImplTest {
 	
 	@Test
 	public void testDeleteFactDeletesInsertedFact() {
-		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl( "localhost", "testcollection");
+		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl( "mongo", "testcollection");
 		assertNotNull(dao);
 		dao.clearFacts();
 		MultiplierBase newFact1 = new MultiplierBase();
@@ -65,7 +65,7 @@ public class FactStorageMongoDBImplTest {
 		fact.setMultiplier(9.99);
 		fact.setMultiplierBaseDescription("testmultiplierbasedescription");
 		fact.setMultiplierBaseName("testmultiplierbasename");
-		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl( "localhost", "testcollection");
+		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl( "mongo", "testcollection");
 		dao.clearFacts();
 		dao.storeFact(fact);
 		MultiplierBase readFact = dao.getFacts().get(0);
@@ -75,7 +75,7 @@ public class FactStorageMongoDBImplTest {
 	
 	@Test
 	public void testIncompleteDBObjectWorksInBeanConversion() {
-		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl( "localhost", "testcollection");
+		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl( "mongo", "testcollection");
 		DBObject db = new BasicDBObject();
 		db.put("_id", new ObjectId("563887c4d4c6a5481e2eccf3"));
 		db.put("appliesToCategory", "testcategory");
@@ -97,7 +97,7 @@ public class FactStorageMongoDBImplTest {
 	
 	@Test(expected = IllegalStateException.class)
 	public void objectWithoutIDThrowsIllegalState() {
-		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl( "localhost", "testcollection");
+		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl( "mongo", "testcollection");
 		DBObject db = new BasicDBObject();
 		db.put("appliesToCategory", "testcategory");
 		db.put("multiplier", new Double(1.24));
@@ -122,7 +122,7 @@ public class FactStorageMongoDBImplTest {
 		fact.setMultiplier(9.99);
 		fact.setMultiplierBaseDescription("testmultiplierbasedescription");
 		fact.setMultiplierBaseName("testmultiplierbasename");
-		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl( "localhost", "testcollection");
+		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl( "mongo", "testcollection");
 		dao.clearFacts();
 		dao.storeFact(fact);
 		ArrayList<MultiplierBase> stored = dao.getFacts();
@@ -158,13 +158,13 @@ public class FactStorageMongoDBImplTest {
 	
 	@Test
 	public void testObjectUpdateFailsWithBrokenObjectId() {
-		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl( "localhost", "testcollection");
+		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl( "mongo", "testcollection");
 		assertFalse(dao.updateFact("BrokenObjectId", new MultiplierBase()));
 	}
 
 	@Test
 	public void testObjectUpdateFailsWithNonExistentObjectId() {
-		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl( "localhost", "testcollection");
+		FactStorageMongoDBImpl dao = new FactStorageMongoDBImpl( "mongo", "testcollection");
 		assertFalse(dao.updateFact("5690e272fffff9875ac08df2", new MultiplierBase()));
 	}	
 }
