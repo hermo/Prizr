@@ -164,7 +164,11 @@ public class FactStorageMongoDBImpl implements FactStorage {
 	
 	private Double nullSafeGetDouble(DBObject db, String fieldName) {
 		if(db.containsField(fieldName)) {
-			return (Double)db.get(fieldName);
+		    Object value = db.get(fieldName);
+		    if (value instanceof Integer) {
+		    	return ((Integer) value).doubleValue();
+			}
+			return (Double) value;
 		} 
 		return new Double(0);
 	}
